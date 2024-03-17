@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    driver-class-name: org.apache.shardingsphere.driver.ShardingSphereDriver
+    url: jdbc:shardingsphere:classpath:carl-db-sharding.yaml
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379

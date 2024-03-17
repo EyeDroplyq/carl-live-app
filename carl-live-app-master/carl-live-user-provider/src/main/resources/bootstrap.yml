@@ -5,7 +5,6 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
-        namespace: carl-live-app
       username: nacos
       password: nacos
 
