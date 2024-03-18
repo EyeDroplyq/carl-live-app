@@ -1,19 +1,24 @@
 package com.carl.live.user.provider.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import com.alibaba.fastjson2.JSON;
 import com.carl.live.app.common.interfaces.ConvertBeanUtils;
 import com.carl.live.user.interfaces.dto.UserDTO;
+import com.carl.live.user.provider.config.RocketMqProducerConfig;
 import com.carl.live.user.provider.dao.mapper.IUserMapper;
 import com.carl.live.user.provider.dao.po.UserPO;
 import com.carl.live.user.provider.service.IUserService;
 import com.google.common.collect.Maps;
 import jakarta.annotation.Resource;
+import org.apache.rocketmq.client.producer.MQProducer;
+import org.apache.rocketmq.common.message.Message;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ThreadLocalRandom;
@@ -36,6 +41,9 @@ public class UserServiceImpl implements IUserService {
     @Resource
     private RedisTemplate<String, UserDTO> redisTemplate;
 
+    @Resource
+    private RocketMqProducerConfig producerConfig;
+
     @Override
     public UserDTO getUserById(Long userId) {
         if (Objects.isNull(userId)) {
@@ -55,6 +63,18 @@ public class UserServiceImpl implements IUserService {
             return false;
         }
         int res = userMapper.updateById(ConvertBeanUtils.convert(userDTO, UserPO.class));
+        redisTemplate.delete(String.valueOf(userDTO.getUserId()));
+        try {
+            MQProducer mqProducer = producerConfig.mqProducer();
+            Message message = new Message();
+            message.setTopic("user-update");
+            message.setBody(JSON.toJSONString(userDTO).getBytes(StandardCharsets.UTF_8));
+            // 延迟一秒发送 level-1对应1s左右，level-2对应10s左右
+            message.setDelayTimeLevel(1);
+            mqProducer.send(message);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return res == 1;
     }
 
