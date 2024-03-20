@@ -14,6 +14,8 @@
         <module>carl-live-api</module>
         <module>carl-live-app-common-interface</module>
         <module>carl-live-framework</module>
+        <module>carl-live-id-generate-provider</module>
+        <module>carl-live-id-generate-interfaces</module>
     </modules>
 
     <properties>
