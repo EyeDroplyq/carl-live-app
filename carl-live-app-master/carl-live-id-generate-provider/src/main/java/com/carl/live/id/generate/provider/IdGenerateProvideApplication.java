@@ -18,21 +18,11 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableDubbo
-public class IdGenerateProvideApplication implements CommandLineRunner {
-    @Resource
-    private IdGenerateRpcImp idGenerateRpcImp;
+public class IdGenerateProvideApplication{
     public static void main(String[] args) {
         SpringApplication springApplication = new SpringApplication(IdGenerateProvideApplication.class);
         springApplication.setWebApplicationType(WebApplicationType.NONE);
         springApplication.run(args);
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-        for (int i = 0; i < 1800; i++) {
-            Long seqId = idGenerateRpcImp.getSeqId(1);
-            System.out.println(seqId);
-
-        }
-    }
 }
