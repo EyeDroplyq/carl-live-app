@@ -29,7 +29,7 @@ public class IdGenerateProvideApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        for (int i = 0; i < 1300; i++) {
+        for (int i = 0; i < 1800; i++) {
             Long seqId = idGenerateRpcImp.getSeqId(1);
             System.out.println(seqId);
 

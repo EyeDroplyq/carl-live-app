@@ -1,6 +1,7 @@
 package com.carl.live.id.generate.provider.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -46,6 +47,7 @@ public class IdBuilderPO implements Serializable {
     /**
      * 是否是有序的id
      */
+   @TableField(value = "is_seq")
     private int isSeq;
 
     /**
