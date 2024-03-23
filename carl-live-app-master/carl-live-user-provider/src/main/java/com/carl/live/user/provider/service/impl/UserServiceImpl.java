@@ -3,11 +3,15 @@ package com.carl.live.user.provider.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import com.alibaba.fastjson2.JSON;
 import com.carl.live.app.common.interfaces.ConvertBeanUtils;
+import com.carl.live.user.interfaces.constants.MqConstants;
+import com.carl.live.user.interfaces.constants.UserMqDeleteCodeEnum;
+import com.carl.live.user.interfaces.dto.UserCacheDeleteAsyncDTO;
 import com.carl.live.user.interfaces.dto.UserDTO;
 import com.carl.live.user.provider.config.RocketMqProducerConfig;
 import com.carl.live.user.provider.dao.mapper.IUserMapper;
 import com.carl.live.user.provider.dao.po.UserPO;
 import com.carl.live.user.provider.service.IUserService;
+import com.carl.live.user.provider.service.IUserTagService;
 import com.google.common.collect.Maps;
 import jakarta.annotation.Resource;
 import org.apache.rocketmq.client.producer.MQProducer;
@@ -17,6 +21,7 @@ import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -26,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.carl.live.app.common.Constants.CacheConstants.USER_PROVIDER_KET;
+import static com.carl.live.app.common.Constants.ComConstants.ONE_INT;
 
 /**
  * @description:
@@ -43,6 +49,9 @@ public class UserServiceImpl implements IUserService {
 
     @Resource
     private RocketMqProducerConfig producerConfig;
+
+    @Resource
+    private IUserTagService userTagService;
 
     @Override
     public UserDTO getUserById(Long userId) {
@@ -63,28 +72,47 @@ public class UserServiceImpl implements IUserService {
             return false;
         }
         int res = userMapper.updateById(ConvertBeanUtils.convert(userDTO, UserPO.class));
+        if (res!=ONE_INT){
+            return false;
+        }
         redisTemplate.delete(String.valueOf(userDTO.getUserId()));
         try {
             MQProducer mqProducer = producerConfig.mqProducer();
             Message message = new Message();
-            message.setTopic("user-update");
-            message.setBody(JSON.toJSONString(userDTO).getBytes(StandardCharsets.UTF_8));
+            message.setTopic(MqConstants.CacheDeleteAsyncTopic);
+            UserCacheDeleteAsyncDTO userCacheDeleteAsyncDTO = new UserCacheDeleteAsyncDTO();
+            userCacheDeleteAsyncDTO.setCode(UserMqDeleteCodeEnum.DELETE_USER_INFO.getCode());
+            Map<String, String> jsonMap = new HashMap<>();
+            jsonMap.put("userId", String.valueOf(userDTO.getUserId()));
+            String json = JSON.toJSONString(jsonMap);
+            userCacheDeleteAsyncDTO.setJson(json);
+            message.setBody(JSON.toJSONString(userCacheDeleteAsyncDTO).getBytes(StandardCharsets.UTF_8));
             // 延迟一秒发送 level-1对应1s左右，level-2对应10s左右
             message.setDelayTimeLevel(1);
             mqProducer.send(message);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return res == 1;
+        return true;
     }
 
+    /**
+     * 插入用户，同时需要事务插入用户标签记录
+     *
+     * @param userDTO
+     * @return
+     */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean insertUser(UserDTO userDTO) {
         if (Objects.isNull(userDTO) || Objects.isNull(userDTO.getUserId())) {
             return false;
         }
         int res = userMapper.insert(ConvertBeanUtils.convert(userDTO, UserPO.class));
-        return res == 1;
+        if (ONE_INT == res) {
+            return userTagService.insertUserTag(userDTO.getUserId()) == 1;
+        }
+        return false;
     }
 
     /**

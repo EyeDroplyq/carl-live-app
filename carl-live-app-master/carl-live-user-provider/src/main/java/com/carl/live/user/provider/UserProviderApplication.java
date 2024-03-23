@@ -1,6 +1,9 @@
 package com.carl.live.user.provider;
 
+import com.carl.live.user.provider.service.IUserService;
+import jakarta.annotation.Resource;
 import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -18,4 +21,5 @@ public class UserProviderApplication {
     public static void main(String[] args) {
         SpringApplication.run(UserProviderApplication.class, args);
     }
+
 }

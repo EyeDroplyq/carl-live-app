@@ -9,7 +9,7 @@ package com.carl.live.app.common.Constants;
 public class ComConstants {
     public static final Integer ONE_INT = 1;
 
-    public static final Integer ZERO_INT = 1;
+    public static final Integer ZERO_INT = 0;
 
     public static final String ZERO_STR = "0";
 

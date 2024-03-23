@@ -9,11 +9,11 @@ spring:
 
 rocketmq:
   producer:
-    nameSrv: 192.168.237.138:9876
+    nameSrv: carl.com:9876
     groupName: ${spring.application.name}
     retryCount: 3
     sendTimeOut: 3000
 
   consumer:
-    nameSrv: 192.168.237.138:9876
+    nameSrv: carl.com:9876
     groupName: ${spring.application.name}

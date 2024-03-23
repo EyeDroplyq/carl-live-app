@@ -2,7 +2,6 @@ package com.carl.live.user.provider.config;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.dubbo.common.threadpool.ThreadPool;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.MQProducer;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,24 +39,24 @@ public class RocketMqProducerConfig {
                 return thread;
             }
         });
+        DefaultMQProducer defaultMQProducer = new DefaultMQProducer();
+        defaultMQProducer.setNamesrvAddr(producerPropertiesConfig.getNameSrv());
+        defaultMQProducer.setProducerGroup(producerPropertiesConfig.getGroupName());
+        // 如果没有发送成功发送给另外一个broker
+        defaultMQProducer.setRetryAnotherBrokerWhenNotStoreOK(true);
+        //设置重试次数
+        defaultMQProducer.setRetryTimesWhenSendFailed(producerPropertiesConfig.getRetryCount());
+        defaultMQProducer.setRetryTimesWhenSendAsyncFailed(producerPropertiesConfig.getRetryCount());
+        // 设置发送消息的超时时间
+        defaultMQProducer.setSendMsgTimeout(producerPropertiesConfig.getSendTimeOut());
+        // 设置异步发送消息
+        defaultMQProducer.setAsyncSenderExecutor(asyncThreadPoolExecutor);
         try {
-            DefaultMQProducer defaultMQProducer = new DefaultMQProducer();
-            defaultMQProducer.setNamesrvAddr(producerPropertiesConfig.getNameSrv());
-            defaultMQProducer.setProducerGroup(producerPropertiesConfig.getGroupName());
-            // 如果没有发送成功发送给另外一个broker
-            defaultMQProducer.setRetryAnotherBrokerWhenNotStoreOK(true);
-            //设置重试次数
-            defaultMQProducer.setRetryTimesWhenSendFailed(producerPropertiesConfig.getRetryCount());
-            defaultMQProducer.setRetryTimesWhenSendAsyncFailed(producerPropertiesConfig.getRetryCount());
-            // 设置发送消息的超时时间
-            defaultMQProducer.setSendMsgTimeout(producerPropertiesConfig.getSendTimeOut());
-            // 设置异步发送消息
-            defaultMQProducer.setAsyncSenderExecutor(asyncThreadPoolExecutor);
             defaultMQProducer.start();
-            return defaultMQProducer;
+            log.info("mq生产者启动完成,nameSrv is {}", producerPropertiesConfig.getNameSrv());
         } catch (Exception e) {
-            log.error(e.getStackTrace().toString());
+            throw new RuntimeException(e);
         }
-        return null;
+        return defaultMQProducer;
     }
 }
