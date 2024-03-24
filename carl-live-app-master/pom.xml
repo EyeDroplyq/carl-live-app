@@ -16,6 +16,7 @@
         <module>carl-live-framework</module>
         <module>carl-live-id-generate-provider</module>
         <module>carl-live-id-generate-interfaces</module>
+        <module>carl-live-gateway</module>
     </modules>
 
     <properties>

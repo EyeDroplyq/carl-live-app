@@ -8,48 +8,36 @@
         <artifactId>carl-live-app-master</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <description>id发号器</description>
-    <artifactId>carl-live-id-generate-provider</artifactId>
+
+    <artifactId>carl-live-gateway</artifactId>
 
     <properties>
-        <mybatis-plus.version>3.5.3</mybatis-plus.version>
-        <dubbo.version>3.2.0-beta.3</dubbo.version>
-        <carl-mysql.version>8.0.28</carl-mysql.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-cloud-starter-gateway.version>4.0.6</spring-cloud-starter-gateway.version>
+        <spring-cloud-starter-loadbalancer.version>4.0.3</spring-cloud-starter-loadbalancer.version>
+        <spring-cloud-starter-bootstrap.version>3.0.2</spring-cloud-starter-bootstrap.version>
+        <alibaba-fastjson.version>2.0.10</alibaba-fastjson.version>
     </properties>
 
     <dependencies>
+        <!--gateway 内部引入了webflux-->
         <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus.version}</version>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
+            <version>${spring-cloud-starter-gateway.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo-spring-boot-starter</artifactId>
-            <version>${dubbo.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>log4j-to-slf4j</artifactId>
-                    <groupId>org.apache.logging.log4j</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${carl-mysql.version}</version>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+            <version>${spring-cloud-starter-loadbalancer.version}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
@@ -57,12 +45,12 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
-            <version>3.0.2</version>
+            <version>${spring-cloud-starter-bootstrap.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.carl</groupId>
-            <artifactId>carl-live-id-generate-interfaces</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${alibaba-fastjson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.carl</groupId>

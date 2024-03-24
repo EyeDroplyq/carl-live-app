@@ -1,11 +1,16 @@
 spring:
-  application:
-    name: carl-live-api
   cloud:
     nacos:
       discovery:
         server-addr: localhost:8848
       username: nacos
       password: nacos
-server:
-  port: 8089
+      config:
+        server-addr: localhost:8848
+  config:
+    import:
+      - optional:nacos:carl-live-api.yaml
+#server:
+#  port: 8089
+#  servlet:
+#    context-path: /live/api

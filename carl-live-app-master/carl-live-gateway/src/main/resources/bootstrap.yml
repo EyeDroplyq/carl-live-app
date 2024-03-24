@@ -1,12 +1,13 @@
 spring:
+  application:
+    name: carl-live-gateway
   cloud:
     nacos:
       discovery:
         server-addr: localhost:8848
-      username: nacos
-      password: nacos
       config:
         server-addr: localhost:8848
+
   config:
     import:
-      - optional:nacos:carl-live-user-provider.yaml
+      - optional:nacos:carl-live-gateway.yaml
