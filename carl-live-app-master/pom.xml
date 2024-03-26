@@ -17,6 +17,8 @@
         <module>carl-live-id-generate-provider</module>
         <module>carl-live-id-generate-interfaces</module>
         <module>carl-live-gateway</module>
+        <module>carl-live-sms-provider</module>
+        <module>carl-live-sms-interface</module>
     </modules>
 
     <properties>
