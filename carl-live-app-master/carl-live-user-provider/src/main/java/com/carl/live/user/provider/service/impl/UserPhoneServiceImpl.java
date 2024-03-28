@@ -1,5 +1,6 @@
 package com.carl.live.user.provider.service.impl;
 
+import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.carl.live.app.common.Constants.CacheConstants;
 import com.carl.live.app.common.Constants.ComConstants;
@@ -44,6 +45,9 @@ public class UserPhoneServiceImpl implements IUserPhoneService {
     @Resource
     private IUserMapper userMapper;
 
+    //为了防止缓存击穿
+    private volatile Object lock = new Object();
+
 
     /**
      * 登录或注册功能
@@ -60,26 +64,31 @@ public class UserPhoneServiceImpl implements IUserPhoneService {
             throw new RuntimeException("手机号不能为空");
         }
         //1、通过手机号从redis查询实体，有直接返回，没有查表
-        String userLoginKey = CacheConstants.USER_LOGIN_KEY + phone;
+        String token = RandomUtil.randomString(18);
+        String userLoginKey = CacheConstants.USER_LOGIN_KEY + token;
         UserLoginDTO userLoginDTO = (UserLoginDTO) redisTemplate.opsForValue().get(userLoginKey);
         if (!ObjectUtils.isEmpty(userLoginDTO)) {
             return UserLoginDTO.loginSuccess(userLoginDTO.getUserId());
         }
-        //查表
-        QueryWrapper<UserPhonePO> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("phone", phone);
-        queryWrapper.eq("status", UserPhoneEnum.VALID.getCode());
-        queryWrapper.last("limit 1");
-        UserPhonePO userPhonePO = userPhoneMapper.selectOne(queryWrapper);
-        if (!ObjectUtils.isEmpty(userPhonePO)) {
-            redisTemplate.opsForValue().set(userLoginKey, ConvertBeanUtils.convert(userPhonePO, UserLoginDTO.class), 10, TimeUnit.MINUTES);
-            return UserLoginDTO.loginSuccess(userPhonePO.getUserId());
+        UserPhonePO userPhonePO = new UserPhonePO();
+        synchronized (lock) {
+            //查表
+            QueryWrapper<UserPhonePO> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("phone", phone);
+            queryWrapper.eq("status", UserPhoneEnum.VALID.getCode());
+            queryWrapper.last("limit 1");
+            userPhonePO = userPhoneMapper.selectOne(queryWrapper);
+            if (!ObjectUtils.isEmpty(userPhonePO)) {
+                redisTemplate.opsForValue().set(userLoginKey, ConvertBeanUtils.convert(userPhonePO, UserLoginDTO.class), 10, TimeUnit.MINUTES);
+                return UserLoginDTO.loginSuccess(userPhonePO.getUserId());
+            }
         }
-        //防止这个phone大量请求过来造成缓存穿透，所以缓存null值
+        //没注册过，防止这个phone大量请求过来造成缓存穿透，所以缓存null值
         redisTemplate.opsForValue().set(userLoginKey, null, 10, TimeUnit.MINUTES);
         // 2、表中没有则插入，然后写回缓存
         userPhonePO = register(phone);
-        redisTemplate.opsForValue().set(userLoginKey, ConvertBeanUtils.convert(userPhonePO, UserLoginDTO.class), 10, TimeUnit.MINUTES);
+        //注册完后删掉原来的缓存, 使用读时缓存方案来保证数据库和缓存的一致性
+        redisTemplate.delete(userLoginKey);
         return UserLoginDTO.loginSuccess(userPhonePO.getUserId());
     }
 
