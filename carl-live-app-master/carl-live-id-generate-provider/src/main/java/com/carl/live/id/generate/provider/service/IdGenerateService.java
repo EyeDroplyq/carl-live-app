@@ -7,4 +7,19 @@ package com.carl.live.id.generate.provider.service;
  * @version: 1.0
  */
 public interface IdGenerateService {
+    /**
+     * 获取有序id
+     *
+     * @param id
+     * @return
+     */
+    Long getSeqId(Integer id);
+
+    /**
+     * 获取无序id
+     *
+     * @param id
+     * @return
+     */
+    Long getUnseqId(Integer id);
 }

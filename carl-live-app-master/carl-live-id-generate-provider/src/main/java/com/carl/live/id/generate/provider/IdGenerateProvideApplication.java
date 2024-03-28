@@ -1,6 +1,7 @@
 package com.carl.live.id.generate.provider;
 
 import com.carl.live.id.generate.provider.rpc.IdGenerateRpcImp;
+import com.carl.live.id.generate.provider.service.IdGenerateService;
 import jakarta.annotation.Resource;
 import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.springframework.boot.CommandLineRunner;
@@ -18,11 +19,20 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableDubbo
-public class IdGenerateProvideApplication{
+public class IdGenerateProvideApplication implements CommandLineRunner{
+    @Resource
+    private IdGenerateService idGenerateService;
     public static void main(String[] args) {
         SpringApplication springApplication = new SpringApplication(IdGenerateProvideApplication.class);
         springApplication.setWebApplicationType(WebApplicationType.NONE);
         springApplication.run(args);
+    }
+    @Override
+    public void run(String... args) throws Exception {
+        for (int i = 0; i < 900; i++) {
+            Long seqId = idGenerateService.getUnseqId(1);
+            System.out.println(seqId);
+        }
     }
 
 }

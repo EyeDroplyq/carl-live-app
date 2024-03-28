@@ -14,6 +14,9 @@ public class CacheConstants {
     public static final String SMS_PROVIDER = "carl-live-sms-provider";
     public static final String SMS_PROVIDER_SEND_TIME = "carl-live-sms-provider-send-time";
 
+    public static final String USER_LOGIN = "carl-live-user-provider-login";
+
+
     /**
      * 用户信息缓存key的前缀
      */
@@ -33,6 +36,10 @@ public class CacheConstants {
      * 短信发送时间
      */
     public static final String SMS_PROVIDER_SEND_TIME_KEY = SMS_PROVIDER_SEND_TIME + ":";
+    /**
+     * 用户登录信息的key
+     */
+    public static final String USER_LOGIN_KEY = USER_LOGIN + ":";
 
 
 }
