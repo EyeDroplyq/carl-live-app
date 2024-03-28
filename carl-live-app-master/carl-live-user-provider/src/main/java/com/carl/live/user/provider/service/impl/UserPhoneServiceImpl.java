@@ -71,7 +71,12 @@ public class UserPhoneServiceImpl implements IUserPhoneService {
             return UserLoginDTO.loginSuccess(userLoginDTO.getUserId());
         }
         UserPhonePO userPhonePO = new UserPhonePO();
+        //双重检查锁机制
         synchronized (lock) {
+            userLoginDTO = (UserLoginDTO) redisTemplate.opsForValue().get(userLoginKey);
+            if (!ObjectUtils.isEmpty(userLoginDTO)) {
+                return UserLoginDTO.loginSuccess(userLoginDTO.getUserId());
+            }
             //查表
             QueryWrapper<UserPhonePO> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("phone", phone);
