@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: carl-lyq.com:8848
+      config:
+        server-addr: carl-lyq.com:8848
+      username: nacos
+      password: nacos
+  config:
+    import:
+      - optional:nacos:carl-live-im-core-server.yaml

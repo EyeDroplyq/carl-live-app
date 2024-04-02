@@ -19,6 +19,9 @@
         <module>carl-live-gateway</module>
         <module>carl-live-sms-provider</module>
         <module>carl-live-sms-interface</module>
+        <module>carl-live-im-core-server</module>
+        <module>carl-live-im-interface</module>
+        <module>carl-live-im-provider</module>
     </modules>
 
     <properties>

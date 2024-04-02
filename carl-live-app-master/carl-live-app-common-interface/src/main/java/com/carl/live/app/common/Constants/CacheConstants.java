@@ -16,6 +16,8 @@ public class CacheConstants {
 
     public static final String USER_LOGIN = "carl-live-user-provider-login";
 
+    public static final String IM_LOGIN_TOKEN = "carl-live-im-login";
+
 
     /**
      * 用户信息缓存key的前缀
@@ -40,6 +42,9 @@ public class CacheConstants {
      * 用户登录信息的key
      */
     public static final String USER_LOGIN_KEY = USER_LOGIN + ":";
-
+    /**
+     * im服务登录token的key
+     */
+    public static final String IM_LOGIN_KEY = IM_LOGIN_TOKEN + ":";
 
 }
