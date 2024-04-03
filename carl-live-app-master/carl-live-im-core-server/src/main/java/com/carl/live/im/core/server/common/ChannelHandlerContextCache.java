@@ -22,7 +22,7 @@ public class ChannelHandlerContextCache {
         userIdAndChannelHandlerContextMap.put(userId, channelHandlerContext);
     }
 
-    public boolean remove(long userId) {
+    public static boolean remove(long userId) {
         return userIdAndChannelHandlerContextMap.remove(userId) != null;
     }
 }

@@ -1,5 +1,6 @@
 package com.carl.live.im.core.server.handler.impl;
 
+import cn.hutool.core.lang.Assert;
 import com.alibaba.fastjson2.JSON;
 import com.carl.im.interfaces.dto.ImMsgBody;
 import com.carl.im.interfaces.enums.ImAppIdEnums;
@@ -12,6 +13,7 @@ import com.carl.live.im.core.server.util.ImContextUtils;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -23,6 +25,7 @@ import java.nio.charset.StandardCharsets;
  * @createDate: 2024-04-01 20:38
  * @version: 1.0
  */
+@Component
 @Slf4j
 public class LoginHandlerImpl implements SimplyHandler {
     @DubboReference
@@ -39,10 +42,7 @@ public class LoginHandlerImpl implements SimplyHandler {
             throw new IllegalArgumentException("token is null");
         }
         Long userId = imServerRpc.getUserIdByToken(token);
-        if (ObjectUtils.isEmpty(userId)) {
-            log.error("userId is null");
-            throw new IllegalArgumentException("userId is null");
-        }
+        Assert.notNull(userId,"userId is null");
         if (userId.equals(imMsgBody.getUserId())) {
             //更新userId和channel的映射关系
             ChannelHandlerContextCache.put(userId, ctx);

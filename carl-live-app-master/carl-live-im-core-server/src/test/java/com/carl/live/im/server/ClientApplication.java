@@ -22,28 +22,7 @@ import java.nio.charset.StandardCharsets;
  */
 public class ClientApplication {
     private void start(String host, Integer port) throws InterruptedException {
-        NioEventLoopGroup bossGroup = new NioEventLoopGroup();
-        Bootstrap bootstrap = new Bootstrap();
-        bootstrap.group(bossGroup);
-        bootstrap.channel(NioSocketChannel.class);
-        bootstrap.handler(new ChannelInitializer<SocketChannel>() {
-            @Override
-            protected void initChannel(SocketChannel ch) throws Exception {
-                System.out.println("client init");
-                ch.pipeline().addLast(new ImMsgEncoder());
-                ch.pipeline().addLast(new ImMsgDecoder());
-                ch.pipeline().addLast(new ClientHandler());
-            }
-        });
-        ChannelFuture channelFuture = bootstrap.connect(host, port).sync();
-        Channel channel = channelFuture.channel();
-        for (int i = 0; i < 100; i++) {
-            channel.writeAndFlush(ImMsg.makeImMsg(ImMsgCodeEnums.LOGIN_IN_MSG.getCode(), "login test".getBytes(StandardCharsets.UTF_8)));
-            channel.writeAndFlush(ImMsg.makeImMsg(ImMsgCodeEnums.LOGIN_OUT_MSG.getCode(), "login out test".getBytes(StandardCharsets.UTF_8)));
-            channel.writeAndFlush(ImMsg.makeImMsg(ImMsgCodeEnums.BIZ_MSG.getCode(), "biz test".getBytes(StandardCharsets.UTF_8)));
-            channel.writeAndFlush(ImMsg.makeImMsg(ImMsgCodeEnums.HEALTH_MSG.getCode(), "health test".getBytes(StandardCharsets.UTF_8)));
-            Thread.sleep(3000);
-        }
+
     }
 
     public static void main(String[] args) throws InterruptedException {

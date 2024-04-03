@@ -4,6 +4,7 @@ import com.carl.live.im.core.server.common.ImMsg;
 import com.carl.live.im.core.server.handler.impl.HandlerFactoryImpl;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.springframework.stereotype.Component;
 
 /**
  * @description: 消息接收handler
@@ -11,6 +12,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * @createDate: 2024-04-01 20:37
  * @version: 1.0
  */
+@Component
 public class ImServerHandler extends SimpleChannelInboundHandler {
     private HandlerFactory handlerFactory = new HandlerFactoryImpl();
 

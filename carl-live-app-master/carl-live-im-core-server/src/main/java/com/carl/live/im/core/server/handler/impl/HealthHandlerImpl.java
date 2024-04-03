@@ -3,6 +3,7 @@ package com.carl.live.im.core.server.handler.impl;
 import com.carl.live.im.core.server.common.ImMsg;
 import com.carl.live.im.core.server.handler.SimplyHandler;
 import io.netty.channel.ChannelHandlerContext;
+import org.springframework.stereotype.Component;
 
 /**
  * @description: 心跳包消息handler实现类
@@ -10,6 +11,7 @@ import io.netty.channel.ChannelHandlerContext;
  * @createDate: 2024-04-01 20:39
  * @version: 1.0
  */
+@Component
 public class HealthHandlerImpl implements SimplyHandler {
     @Override
     public void doHandler(ChannelHandlerContext ctx, ImMsg msg) {

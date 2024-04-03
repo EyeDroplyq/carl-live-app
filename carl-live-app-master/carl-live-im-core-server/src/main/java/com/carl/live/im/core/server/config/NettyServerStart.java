@@ -9,6 +9,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -23,9 +24,13 @@ import org.springframework.context.annotation.Configuration;
 public class NettyServerStart implements InitializingBean {
     @Value("${im.server.port}")
     private int port;
+
+    @Resource
+    private ImServerHandler imServerHandler;
+
     @Override
     public void afterPropertiesSet() throws Exception {
-        new Thread(()->{
+        new Thread(() -> {
             try {
                 this.startApplication(port);
             } catch (InterruptedException e) {
@@ -33,6 +38,7 @@ public class NettyServerStart implements InitializingBean {
             }
         }).start();
     }
+
     public void startApplication(int port) throws InterruptedException {
         NioEventLoopGroup bossGroup = new NioEventLoopGroup();
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -46,7 +52,7 @@ public class NettyServerStart implements InitializingBean {
                 ch.pipeline().addLast(new ImMsgDecoder());
                 ch.pipeline().addLast(new ImMsgEncoder());
                 // 设置handler
-                ch.pipeline().addLast(new ImServerHandler());
+                ch.pipeline().addLast(imServerHandler);
             }
         });
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
