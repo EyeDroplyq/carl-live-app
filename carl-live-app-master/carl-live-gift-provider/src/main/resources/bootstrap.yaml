@@ -1,0 +1,17 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: carl-lyq.com:8848
+      username: nacos
+      password: nacos
+      config:
+        server-addr: carl-lyq.com:8848
+  config:
+    import:
+      - optional:carl-live-gift-provider.yaml
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/carl_live_user?serverTimezone=GMT%2B8

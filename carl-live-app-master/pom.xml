@@ -22,6 +22,8 @@
         <module>carl-live-im-core-server</module>
         <module>carl-live-im-interface</module>
         <module>carl-live-im-provider</module>
+        <module>carl-live-gift-provider</module>
+        <module>carl-live-gift-interface</module>
     </modules>
 
     <properties>
