@@ -1,7 +1,7 @@
 package com.carl.live.user.provider.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.carl.live.app.common.Constants.CacheConstants;
+import com.carl.live.app.common.constants.CacheConstants;
 import com.carl.live.app.common.interfaces.ConvertBeanUtils;
 import com.carl.live.user.interfaces.constants.MqConstants;
 import com.carl.live.user.interfaces.constants.UserMqDeleteCodeEnum;
@@ -27,7 +27,7 @@ import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
-import static com.carl.live.app.common.Constants.ComConstants.ONE_INT;
+import static com.carl.live.app.common.constants.ComConstants.ONE_INT;
 
 /**
  * @description:

@@ -1,7 +1,7 @@
 package com.carl.live.gift.provider.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.carl.live.app.common.Constants.ComConstants;
+import com.carl.live.app.common.constants.ComConstants;
 import com.carl.live.app.common.enums.StatusEnum;
 import com.carl.live.app.common.interfaces.ConvertBeanUtils;
 import com.carl.live.gift.interfaces.dto.GiftConfigDTO;

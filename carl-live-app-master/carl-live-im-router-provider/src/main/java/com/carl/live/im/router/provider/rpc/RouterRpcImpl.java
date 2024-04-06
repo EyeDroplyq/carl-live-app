@@ -1,0 +1,22 @@
+package com.carl.live.im.router.provider.rpc;
+
+import com.carl.live.im.router.interfaces.rpc.IRouterRpc;
+import com.carl.live.im.router.provider.service.RouterService;
+import jakarta.annotation.Resource;
+import org.apache.dubbo.config.annotation.DubboService;
+
+/**
+ * @description:
+ * @author: 小琦
+ * @createDate: 2024-04-06 20:52
+ * @version: 1.0
+ */
+@DubboService
+public class RouterRpcImpl implements IRouterRpc {
+    @Resource
+    private RouterService routerService;
+    @Override
+    public boolean sendMsg(Long objectId, String msgJson) {
+        return routerService.sendMsg(objectId,msgJson);
+    }
+}

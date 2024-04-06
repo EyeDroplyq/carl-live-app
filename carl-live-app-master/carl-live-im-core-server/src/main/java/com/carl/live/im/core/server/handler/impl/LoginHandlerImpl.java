@@ -33,6 +33,10 @@ public class LoginHandlerImpl implements SimplyHandler {
 
     @Override
     public void doHandler(ChannelHandlerContext ctx, ImMsg msg) {
+        // 防止重复请求
+        if (!ObjectUtils.isEmpty(ImContextUtils.getUserId(ctx))) {
+            return;
+        }
         byte[] body = msg.getBytes();
         ImMsgBody imMsgBody = JSON.parseObject(new String(body), ImMsgBody.class);
         String token = imMsgBody.getToken();
@@ -42,7 +46,7 @@ public class LoginHandlerImpl implements SimplyHandler {
             throw new IllegalArgumentException("token is null");
         }
         Long userId = imServerRpc.getUserIdByToken(token);
-        Assert.notNull(userId,"userId is null");
+        Assert.notNull(userId, "userId is null");
         if (userId.equals(imMsgBody.getUserId())) {
             //更新userId和channel的映射关系
             ChannelHandlerContextCache.put(userId, ctx);

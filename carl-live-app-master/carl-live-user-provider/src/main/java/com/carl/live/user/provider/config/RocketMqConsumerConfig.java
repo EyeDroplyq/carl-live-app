@@ -3,7 +3,7 @@ package com.carl.live.user.provider.config;
 import cn.hutool.core.lang.Assert;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.carl.live.app.common.Constants.CacheConstants;
+import com.carl.live.app.common.constants.CacheConstants;
 import com.carl.live.user.interfaces.constants.MqConstants;
 import com.carl.live.user.interfaces.constants.UserMqDeleteCodeEnum;
 import com.carl.live.user.interfaces.dto.UserCacheDeleteAsyncDTO;

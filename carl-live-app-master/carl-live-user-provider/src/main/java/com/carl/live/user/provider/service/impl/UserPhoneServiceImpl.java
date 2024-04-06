@@ -2,8 +2,8 @@ package com.carl.live.user.provider.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.carl.live.app.common.Constants.CacheConstants;
-import com.carl.live.app.common.Constants.ComConstants;
+import com.carl.live.app.common.constants.CacheConstants;
+import com.carl.live.app.common.constants.ComConstants;
 import com.carl.live.app.common.enums.UserPhoneEnum;
 import com.carl.live.app.common.interfaces.ConvertBeanUtils;
 import com.carl.live.id.generate.interfaces.IdGenerate;

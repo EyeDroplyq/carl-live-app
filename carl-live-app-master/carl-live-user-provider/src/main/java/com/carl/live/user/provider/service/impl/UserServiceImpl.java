@@ -30,8 +30,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static com.carl.live.app.common.Constants.CacheConstants.USER_PROVIDER_KET;
-import static com.carl.live.app.common.Constants.ComConstants.ONE_INT;
+import static com.carl.live.app.common.constants.CacheConstants.USER_PROVIDER_KET;
+import static com.carl.live.app.common.constants.ComConstants.ONE_INT;
 
 /**
  * @description:

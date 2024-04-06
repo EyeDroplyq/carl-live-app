@@ -1,6 +1,6 @@
 package com.carl.live.id.generate.provider.service.impl;
 
-import com.carl.live.app.common.Constants.ComConstants;
+import com.carl.live.app.common.constants.ComConstants;
 import com.carl.live.id.generate.provider.bo.LocalSeqIdBO;
 import com.carl.live.id.generate.provider.bo.LocalUnSeqIdBO;
 import com.carl.live.id.generate.provider.config.IdGenerateProperties;

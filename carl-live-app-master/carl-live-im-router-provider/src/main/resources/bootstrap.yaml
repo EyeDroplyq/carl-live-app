@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      username: nacos
+      password: nacos
+      config:
+        server-addr: localhost:8848
+  config:
+    import:
+      - optional:nacos:carl-live-im-router-provider.yaml
+
+dubbo:
+  consumer:
+    cluster: imRouter

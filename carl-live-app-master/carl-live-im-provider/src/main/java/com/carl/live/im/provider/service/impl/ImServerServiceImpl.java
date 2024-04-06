@@ -1,7 +1,7 @@
 package com.carl.live.im.provider.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
-import com.carl.live.app.common.Constants.CacheConstants;
+import com.carl.live.app.common.constants.CacheConstants;
 import com.carl.live.im.provider.service.ImServerService;
 import jakarta.annotation.Resource;
 import org.springframework.data.redis.core.RedisTemplate;

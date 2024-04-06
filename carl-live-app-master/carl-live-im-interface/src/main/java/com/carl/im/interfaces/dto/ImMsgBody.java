@@ -27,6 +27,8 @@ public class ImMsgBody implements Serializable {
 
     private String token;
 
+
+
     /**
      * 和业务服务进行消息传递
      */

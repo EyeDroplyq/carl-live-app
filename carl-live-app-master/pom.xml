@@ -17,13 +17,17 @@
         <module>carl-live-id-generate-provider</module>
         <module>carl-live-id-generate-interfaces</module>
         <module>carl-live-gateway</module>
-        <module>carl-live-sms-provider</module>
-        <module>carl-live-sms-interface</module>
+        <module>carl-live-msg-provider</module>
+        <module>carl-live-msg-interface</module>
         <module>carl-live-im-core-server</module>
         <module>carl-live-im-interface</module>
         <module>carl-live-im-provider</module>
         <module>carl-live-gift-provider</module>
         <module>carl-live-gift-interface</module>
+        <module>carl-live-im-server-interfaces</module>
+        <module>carl-live-im-router-provider</module>
+        <module>carl-live-im-router-interfaces</module>
+        <module>carl-live-im-core-server-interfaces</module>
     </modules>
 
     <properties>
