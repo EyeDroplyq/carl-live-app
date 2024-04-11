@@ -16,4 +16,6 @@ public interface RouterHandlerService {
      * @param imMsgBody
      */
     void onReceive(ImMsgBody imMsgBody);
+
+    public void sendMsg(long userId, ImMsgBody imMsgBody);
 }
