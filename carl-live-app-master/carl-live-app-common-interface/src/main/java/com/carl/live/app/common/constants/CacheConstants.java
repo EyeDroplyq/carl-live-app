@@ -51,5 +51,7 @@ public class CacheConstants {
 
     public static final String IM_CORE_HEART_BEAT_KEY = IM_CORE_PREFIX + ":"+"heart_beat:";
 
+    public static final String IM_BIND_IP_KEY="carl-live-im-bind-ip:";
+
 
 }

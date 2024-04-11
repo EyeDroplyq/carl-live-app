@@ -45,4 +45,6 @@ public interface GiftConfigService {
      * @return
      */
     boolean insertOneGiftRecord(GiftRecordDTO giftRecordDTO);
+
+    boolean send(GiftConfigDTO giftConfigDTO);
 }

@@ -50,4 +50,9 @@ public class GiftConfigRpcImpl implements GiftConfigRpc {
     public boolean insertOneGiftRecord(GiftRecordDTO giftRecordDTO) {
         return giftConfigService.insertOneGiftRecord(giftRecordDTO);
     }
+
+    @Override
+    public boolean send(GiftConfigDTO giftConfigDTO) {
+        return giftConfigService.send(giftConfigDTO);
+    }
 }

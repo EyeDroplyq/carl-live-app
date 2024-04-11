@@ -1,6 +1,9 @@
 package com.carl.live.im.core.server.rpc;
 
+import com.carl.im.interfaces.dto.ImMsgBody;
 import com.carl.live.im.core.server.interfaces.rpc.IRouterHandlerRpc;
+import com.carl.live.im.core.server.service.RouterHandlerService;
+import jakarta.annotation.Resource;
 import org.apache.dubbo.config.annotation.DubboService;
 
 /**
@@ -11,14 +14,17 @@ import org.apache.dubbo.config.annotation.DubboService;
  */
 @DubboService
 public class RouterHandlerRpcImpl implements IRouterHandlerRpc {
+    @Resource
+    private RouterHandlerService routerHandlerService;
+
     /**
      * 给用户发送消息
      *
      * @param userId
-     * @param msgJson
+     * @param imMsgBody
      */
     @Override
-    public void sendMsg(long userId, String msgJson) {
-        System.out.println("用户" + userId + " 收到消息为：" + msgJson);
+    public void sendMsg(long userId, ImMsgBody imMsgBody) {
+        routerHandlerService.onReceive(imMsgBody);
     }
 }

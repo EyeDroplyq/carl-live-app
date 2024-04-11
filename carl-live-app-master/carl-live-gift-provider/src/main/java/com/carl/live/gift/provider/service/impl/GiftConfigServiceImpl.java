@@ -1,5 +1,6 @@
 package com.carl.live.gift.provider.service.impl;
 
+import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.carl.live.app.common.constants.ComConstants;
 import com.carl.live.app.common.enums.StatusEnum;
@@ -95,5 +96,12 @@ public class GiftConfigServiceImpl implements GiftConfigService {
     public boolean insertOneGiftRecord(GiftRecordDTO giftRecordDTO) {
         GitRecordPO gitRecordPO = ConvertBeanUtils.convert(giftRecordDTO, GitRecordPO.class);
         return giftRecordMapper.insert(gitRecordPO) == ComConstants.ONE_INT;
+    }
+
+    @Override
+    public boolean send(GiftConfigDTO giftConfigDTO) {
+        Integer giftId = giftConfigDTO.getGiftId();
+        Assert.notNull(giftId,"礼物id不能为空");
+        return true;
     }
 }

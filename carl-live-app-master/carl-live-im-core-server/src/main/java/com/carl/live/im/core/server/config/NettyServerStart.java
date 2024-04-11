@@ -1,5 +1,6 @@
 package com.carl.live.im.core.server.config;
 
+import com.carl.live.im.core.server.common.ChannelHandlerContextCache;
 import com.carl.live.im.core.server.common.ImMsgDecoder;
 import com.carl.live.im.core.server.common.ImMsgEncoder;
 import com.carl.live.im.core.server.handler.ImServerHandler;
@@ -13,6 +14,8 @@ import jakarta.annotation.Resource;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+
 
 /**
  * @description:
@@ -27,6 +30,9 @@ public class NettyServerStart implements InitializingBean {
 
     @Resource
     private ImServerHandler imServerHandler;
+
+    @Resource
+    private Environment environment;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -59,6 +65,9 @@ public class NettyServerStart implements InitializingBean {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }));
+        String registryIp = environment.getProperty("DUBBO_REGISTRY_IP");
+        String registryPort=environment.getProperty("DUBBO_REGISTRY_PORT");
+        ChannelHandlerContextCache.setServerIpAddress(registryIp+":"+registryPort);
         ChannelFuture channelFuture = bootstrap.bind(port).sync();
         channelFuture.channel().closeFuture().sync();
     }

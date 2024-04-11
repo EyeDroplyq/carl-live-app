@@ -28,6 +28,8 @@
         <module>carl-live-im-router-provider</module>
         <module>carl-live-im-router-interfaces</module>
         <module>carl-live-im-core-server-interfaces</module>
+        <module>carl-live-bank-provider</module>
+        <module>carl-live-bank-interface</module>
     </modules>
 
     <properties>

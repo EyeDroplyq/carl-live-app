@@ -12,6 +12,16 @@ import java.util.Map;
  * @version: 1.0
  */
 public class ChannelHandlerContextCache {
+    private static  String SERVER_IP_ADDRESS="";
+
+    public static String getServerIpAddress() {
+        return SERVER_IP_ADDRESS;
+    }
+
+    public static void setServerIpAddress(String serverIpAddress) {
+        SERVER_IP_ADDRESS = serverIpAddress;
+    }
+
     private static final Map<Long, ChannelHandlerContext> userIdAndChannelHandlerContextMap = new HashMap<>();
 
     public static ChannelHandlerContext get(long userId) {

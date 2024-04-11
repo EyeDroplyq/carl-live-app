@@ -6,18 +6,23 @@ import com.carl.im.interfaces.dto.ImMsgBody;
 import com.carl.im.interfaces.enums.ImAppIdEnums;
 import com.carl.im.interfaces.enums.ImMsgCodeEnums;
 import com.carl.im.interfaces.rpc.ImServerRpc;
+import com.carl.live.app.common.constants.CacheConstants;
 import com.carl.live.im.core.server.common.ChannelHandlerContextCache;
 import com.carl.live.im.core.server.common.ImMsg;
+import com.carl.live.im.core.server.config.HeartBeatConfigProperties;
 import com.carl.live.im.core.server.handler.SimplyHandler;
 import com.carl.live.im.core.server.util.ImContextUtils;
 import io.netty.channel.ChannelHandlerContext;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @description: 登录handler实现类
@@ -30,6 +35,12 @@ import java.nio.charset.StandardCharsets;
 public class LoginHandlerImpl implements SimplyHandler {
     @DubboReference
     private ImServerRpc imServerRpc;
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Resource
+    private HeartBeatConfigProperties heartBeatConfigProperties;
 
     @Override
     public void doHandler(ChannelHandlerContext ctx, ImMsg msg) {
@@ -47,6 +58,9 @@ public class LoginHandlerImpl implements SimplyHandler {
         }
         Long userId = imServerRpc.getUserIdByToken(token);
         Assert.notNull(userId, "userId is null");
+        // 将ip信息注册到redis中
+        String bindIpKey = CacheConstants.IM_BIND_IP_KEY + imMsgBody.getAppId() + ":" + userId;
+        stringRedisTemplate.opsForValue().set(bindIpKey, ChannelHandlerContextCache.getServerIpAddress(), heartBeatConfigProperties.getExpiredHeartBeat() * 2, TimeUnit.MILLISECONDS);
         if (userId.equals(imMsgBody.getUserId())) {
             //更新userId和channel的映射关系
             ChannelHandlerContextCache.put(userId, ctx);

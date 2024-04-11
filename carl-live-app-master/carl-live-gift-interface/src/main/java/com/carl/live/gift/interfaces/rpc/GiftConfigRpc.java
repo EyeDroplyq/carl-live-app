@@ -45,4 +45,11 @@ public interface GiftConfigRpc {
      * @return
      */
     boolean insertOneGiftRecord(GiftRecordDTO giftRecordDTO);
+
+    /**
+     * 送礼
+     * @param giftConfigDTO
+     * @return
+     */
+    boolean send(GiftConfigDTO giftConfigDTO);
 }

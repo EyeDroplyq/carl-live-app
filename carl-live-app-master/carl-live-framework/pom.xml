@@ -12,6 +12,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>carl-live-framework-redis</module>
+        <module>carl-live-web-starter</module>
     </modules>
 
     <properties>

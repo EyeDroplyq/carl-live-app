@@ -12,10 +12,12 @@ import com.carl.live.im.core.server.util.ImContextUtils;
 import io.netty.channel.ChannelHandlerContext;
 import jakarta.annotation.Resource;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @description: 心跳包消息handler实现类
@@ -27,6 +29,9 @@ import java.nio.charset.StandardCharsets;
 public class HealthHandlerImpl implements SimplyHandler {
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     @Resource
     private HeartBeatConfigProperties heartBeatConfigProperties;
@@ -44,6 +49,9 @@ public class HealthHandlerImpl implements SimplyHandler {
             ChannelHandlerContextCache.remove(userId);
             throw new IllegalArgumentException("appId为空");
         }
+        // 延长ip绑定信息的过期时间
+        String bindIpKey = CacheConstants.IM_BIND_IP_KEY + appId + ":" + userId;
+        stringRedisTemplate.expire(bindIpKey, heartBeatConfigProperties.getExpiredHeartBeat() * 2, TimeUnit.MILLISECONDS);
         String heartBeatKey = CacheConstants.IM_CORE_HEART_BEAT_KEY + appId + ":" + (userId % 10000);
         // 将用户的心跳数据存在zset数据结构中，如果用大量的数据过来为了防止产生大key,所以对userId进行取余，然后作为zset的key
         saveHeartBeatToZset(userId, heartBeatKey);

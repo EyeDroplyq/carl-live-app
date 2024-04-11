@@ -1,5 +1,6 @@
 package com.carl.live.im.router.provider.rpc;
 
+import com.carl.im.interfaces.dto.ImMsgBody;
 import com.carl.live.im.router.interfaces.rpc.IRouterRpc;
 import com.carl.live.im.router.provider.service.RouterService;
 import jakarta.annotation.Resource;
@@ -16,7 +17,7 @@ public class RouterRpcImpl implements IRouterRpc {
     @Resource
     private RouterService routerService;
     @Override
-    public boolean sendMsg(Long objectId, String msgJson) {
-        return routerService.sendMsg(objectId,msgJson);
+    public boolean sendMsg(Long objectId, ImMsgBody imMsgBody) {
+        return routerService.sendMsg(objectId,imMsgBody);
     }
 }
