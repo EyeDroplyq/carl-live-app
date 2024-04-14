@@ -20,6 +20,8 @@ public class CacheConstants {
 
     public static final String IM_CORE_PREFIX = "carl-live-im-core";
 
+    public static final String USER_BANK_PREFIX = "carl-live-bank-provider";
+
 
     /**
      * 用户信息缓存key的前缀
@@ -52,6 +54,14 @@ public class CacheConstants {
     public static final String IM_CORE_HEART_BEAT_KEY = IM_CORE_PREFIX + ":"+"heart_beat:";
 
     public static final String IM_BIND_IP_KEY="carl-live-im-bind-ip:";
+    /**
+     * 用户账户余额 key
+     */
+    public static final String USER_ACCOUNT_BALANCE_KEY=USER_BANK_PREFIX+":"+"account:"+"balace:";
 
+    /**
+     * 支付产品列表 key
+     */
+    public static  final  String PAY_PRODUCT_KEY=USER_BANK_PREFIX+"pay:product:";
 
 }

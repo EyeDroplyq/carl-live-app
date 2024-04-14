@@ -51,6 +51,6 @@ public class CurrencyAccountRpcImpl implements ICurrencyAccountRpc {
      */
     @Override
     public AccountTradeRespDTO consume(AccountTradeReqDTO accountTradeReqDTO) {
-        return currencyAccountService.consume(accountTradeReqDTO);
+        return currencyAccountService.consumeSendGift(accountTradeReqDTO);
     }
 }

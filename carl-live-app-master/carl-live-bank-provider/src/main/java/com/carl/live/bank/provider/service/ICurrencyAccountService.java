@@ -52,5 +52,5 @@ public interface ICurrencyAccountService {
      * @param accountTradeReqDTO
      * @return
      */
-    AccountTradeRespDTO consume(AccountTradeReqDTO accountTradeReqDTO);
+    AccountTradeRespDTO consumeSendGift(AccountTradeReqDTO accountTradeReqDTO);
 }
