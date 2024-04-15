@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -65,5 +66,31 @@ public class PayProductServiceImpl implements IPayProductService {
         redisTemplate.opsForList().leftPushAll(payProductKey, payProductDTOS);
         redisTemplate.expire(payProductKey, 30, TimeUnit.MINUTES);
         return payProductDTOS;
+    }
+
+    /**
+     * 通过产品id查询支付产品
+     *
+     * @param productId
+     * @return
+     */
+    @Override
+    public PayProductDTO getByProductId(Integer productId) {
+        String productKey = CacheConstants.PAY_PRODUCT_KEY + productId;
+        PayProductDTO product = (PayProductDTO) redisTemplate.opsForValue().get(productKey);
+        if (product != null) {
+            if (ObjectUtils.isEmpty(product.getId())) {
+                return null;
+            }
+            return product;
+        }
+        PayProductPO payProductPO = payProductMapper.selectById(productId);
+        if (payProductPO != null) {
+            PayProductDTO payProductDTO = ConvertBeanUtils.convert(payProductPO, PayProductDTO.class);
+            redisTemplate.opsForValue().set(productKey, payProductDTO, 30, TimeUnit.MINUTES);
+            return payProductDTO;
+        }
+        redisTemplate.opsForValue().set(productKey, new PayProductDTO(), 5, TimeUnit.MINUTES);
+        return null;
     }
 }

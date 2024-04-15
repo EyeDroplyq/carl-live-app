@@ -17,4 +17,11 @@ public interface IPayProductRpc {
      * @return
      */
     List<PayProductDTO> products(int type);
+
+    /**
+     * 根据产品id查询支付产品
+     * @param productId
+     * @return
+     */
+    PayProductDTO getByProductId(Integer productId);
 }

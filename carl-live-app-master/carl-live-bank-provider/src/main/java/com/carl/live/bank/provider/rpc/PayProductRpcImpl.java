@@ -28,4 +28,14 @@ public class PayProductRpcImpl implements IPayProductRpc {
     public List<PayProductDTO> products(int type) {
         return payProductService.products(type);
     }
+
+    /**
+     * 通过产品id查询支付产品
+     * @param productId
+     * @return
+     */
+    @Override
+    public PayProductDTO getByProductId(Integer productId) {
+        return payProductService.getByProductId(productId);
+    }
 }

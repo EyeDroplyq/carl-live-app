@@ -64,4 +64,5 @@ public class CacheConstants {
      */
     public static  final  String PAY_PRODUCT_KEY=USER_BANK_PREFIX+"pay:product:";
 
+
 }
