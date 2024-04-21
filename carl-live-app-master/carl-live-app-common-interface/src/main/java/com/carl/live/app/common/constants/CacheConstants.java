@@ -22,6 +22,9 @@ public class CacheConstants {
 
     public static final String USER_BANK_PREFIX = "carl-live-bank-provider";
 
+    public static final String GIFT_PREFIX="carl-live-gift-provider:";
+
+
 
     /**
      * 用户信息缓存key的前缀
@@ -64,5 +67,9 @@ public class CacheConstants {
      */
     public static  final  String PAY_PRODUCT_KEY=USER_BANK_PREFIX+"pay:product:";
 
+    /**
+     * 红包key
+     */
+    public static final String REDPACKET_KEY=GIFT_PREFIX+"redpacket:";
 
 }
