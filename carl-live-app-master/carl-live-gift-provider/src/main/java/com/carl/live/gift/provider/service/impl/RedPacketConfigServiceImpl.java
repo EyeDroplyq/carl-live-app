@@ -5,6 +5,7 @@ import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.carl.live.app.common.constants.CacheConstants;
 import com.carl.live.app.common.enums.StatusEnum;
+import com.carl.live.gift.interfaces.dto.RedPacketReceiveDTO;
 import com.carl.live.gift.provider.dao.mapper.IRedPacketConfigMapper;
 import com.carl.live.gift.provider.dao.po.RedPacketConfigPO;
 import com.carl.live.gift.provider.service.IRedPacketConfigService;
@@ -94,6 +95,28 @@ public class RedPacketConfigServiceImpl implements IRedPacketConfigService {
     }
 
     /**
+     * 抢红包
+     *
+     * @param code
+     * @return
+     */
+    @Override
+    public RedPacketReceiveDTO receiveRedPacket(String code) {
+        String key = CacheConstants.REDPACKET_KEY + code;
+        Object price = redisTemplate.opsForList().rightPop(key);
+        if (price == null) {
+            return null;
+        }
+        redisTemplate.opsForValue().increment(CacheConstants.REDPACKET_TOTAL_GET_KEY + code);
+        redisTemplate.expire(CacheConstants.REDPACKET_TOTAL_GET_KEY + code, 1, TimeUnit.DAYS);
+        redisTemplate.opsForValue().increment(CacheConstants.REDPACKET_TOTAL_GET_PRICE_KEY + code, (int) price);
+        redisTemplate.expire(CacheConstants.REDPACKET_TOTAL_GET_PRICE_KEY + code, 1, TimeUnit.DAYS);
+        //todo 设置红包雨活动中抢到的最大金额
+
+        return new RedPacketReceiveDTO((Integer) price);
+    }
+
+    /**
      * 使用二倍均值算法生成红包列表
      *
      * @param totalPrice
@@ -111,7 +134,7 @@ public class RedPacketConfigServiceImpl implements IRedPacketConfigService {
                 int avgMoney = ((totalPrice - useMoney) / (totalCount - i)) * 2;
                 int curMoney = 1 + new Random().nextInt(avgMoney - 1);
                 res.add(curMoney);
-                useMoney+=curMoney;
+                useMoney += curMoney;
             }
         }
         return res;

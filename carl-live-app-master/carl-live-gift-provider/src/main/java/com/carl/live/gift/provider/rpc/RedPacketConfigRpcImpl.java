@@ -2,6 +2,7 @@ package com.carl.live.gift.provider.rpc;
 
 import com.carl.live.app.common.interfaces.ConvertBeanUtils;
 import com.carl.live.gift.interfaces.dto.RedPacketConfigDTO;
+import com.carl.live.gift.interfaces.dto.RedPacketReceiveDTO;
 import com.carl.live.gift.interfaces.rpc.IRedPacketConfigRpc;
 import com.carl.live.gift.provider.dao.po.RedPacketConfigPO;
 import com.carl.live.gift.provider.service.IRedPacketConfigService;
@@ -32,5 +33,15 @@ public class RedPacketConfigRpcImpl implements IRedPacketConfigRpc {
     @Override
     public boolean updateById(RedPacketConfigDTO redPacketConfigDTO) {
         return redPacketConfigService.updateById(ConvertBeanUtils.convert(redPacketConfigDTO, RedPacketConfigPO.class));
+    }
+
+    /**
+     * 抢红包
+     * @param code
+     * @return
+     */
+    @Override
+    public RedPacketReceiveDTO receiveRedPacket(String code) {
+        return redPacketConfigService.receiveRedPacket(code);
     }
 }

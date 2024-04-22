@@ -1,6 +1,7 @@
 package com.carl.live.gift.interfaces.rpc;
 
 import com.carl.live.gift.interfaces.dto.RedPacketConfigDTO;
+import com.carl.live.gift.interfaces.dto.RedPacketReceiveDTO;
 
 /**
  * @description:
@@ -29,4 +30,11 @@ public interface IRedPacketConfigRpc {
      * @return
      */
     boolean updateById(RedPacketConfigDTO redPacketConfigDTO);
+
+    /**
+     * 抢红包
+     * @param code
+     * @return
+     */
+    RedPacketReceiveDTO receiveRedPacket(String code);
 }

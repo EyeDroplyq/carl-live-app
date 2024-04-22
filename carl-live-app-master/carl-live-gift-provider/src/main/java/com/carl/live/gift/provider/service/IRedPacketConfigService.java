@@ -1,5 +1,6 @@
 package com.carl.live.gift.provider.service;
 
+import com.carl.live.gift.interfaces.dto.RedPacketReceiveDTO;
 import com.carl.live.gift.provider.dao.po.RedPacketConfigPO;
 
 /**
@@ -36,4 +37,11 @@ public interface IRedPacketConfigService {
      * @return
      */
     boolean prepareRedPacket(Integer anchorId);
+
+    /**
+     * 抢红包
+     * @param code
+     * @return
+     */
+    RedPacketReceiveDTO receiveRedPacket(String code);
 }

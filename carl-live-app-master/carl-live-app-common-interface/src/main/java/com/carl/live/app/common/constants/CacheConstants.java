@@ -72,4 +72,19 @@ public class CacheConstants {
      */
     public static final String REDPACKET_KEY=GIFT_PREFIX+"redpacket:";
 
+    /**
+     * 被抢的红包个数key
+     */
+    public static final String REDPACKET_TOTAL_GET_KEY=REDPACKET_KEY+"total:get:";
+
+    /**
+     * 被抢的金额key
+     */
+    public static final String REDPACKET_TOTAL_GET_PRICE_KEY=REDPACKET_KEY+"total:get:price:";
+
+    /**
+     * 被抢的最大金额key
+     */
+    public static final String REDPACKET_TOTAL_GET_MAX_PRICE_KEY=REDPACKET_KEY+"total:get:max:price:";
+
 }
